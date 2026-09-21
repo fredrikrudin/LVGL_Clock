@@ -27,7 +27,7 @@ LVGL_Clock/
 
 ## ⚙️ Core Architecture & Components
 
-### 1. Main Entrypoint (`09_LVGL_Clock.ino`)
+### 1. Main Entrypoint (`LVGL_Clock.ino`)
 Initializes the board's hardware wrapper via Waveshare's Board Support Package (BSP), initializes the LVGL port wrapper, and continuously drives both the background timekeeper and UI updates.
 
 ### 2. Time Manager (`time_manager.h` / `time_manager.cpp`)
