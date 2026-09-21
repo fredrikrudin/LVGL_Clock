@@ -6,6 +6,9 @@
 #include "time_manager.h"
 #include "hardware_manager.h"
 
+// Inkludera den nya WiFi-modulen
+#include "wifi_manager.h"
+
 static unsigned long last_hardware_check = 0;
 
 void setup() {
@@ -23,7 +26,10 @@ void setup() {
     // 4. Initiera klockhanteringen (Ansluter till PCF85063A)
     TimeManager::init();
 
-    // 5. Bygg och visa gränssnittet
+    // 5. INAKTIVERAD: Initiera WiFi och starta NTP-bakgrundssynk
+    // WiFiManager::init();
+
+    // 6. Bygg och visa gränssnittet
     UIManager::init();
 }
 
@@ -34,6 +40,9 @@ void loop() {
 
     // Läs av inkommande CAN-meddelanden kontinuerligt (Non-blocking)
     HardwareManager::processCANBus();
+
+    // 7. INAKTIVERAD: Hantera WiFi-status och kolla NTP-status i bakgrunden
+    // WiFiManager::update();
 
     // Utför diagnostik och I2C-skanning var 5:e sekund för att inte blockera UI
     unsigned long current_time = millis();
