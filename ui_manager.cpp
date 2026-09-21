@@ -8,7 +8,7 @@ namespace UIManager {
     static lv_obj_t* settings_scr = nullptr;
     
     static lv_obj_t* time_label = nullptr;
-    static lv_obj_t* bat_label = nullptr; // Nytt batterielement
+    static lv_obj_t* bat_label = nullptr; 
     static lv_obj_t* hour_roller = nullptr;
     static lv_obj_t* min_roller = nullptr;
 
@@ -16,7 +16,7 @@ namespace UIManager {
     static void save_settings_cb(lv_event_t* e) {
         int h = lv_roller_get_selected(hour_roller);
         int m = lv_roller_get_selected(min_roller);
-        TimeManager::setTime(h, m, 0); // Sparar till både minne och RTC
+        TimeManager::setTime(h, m, 0); 
         showMainScreen();
     }
 
@@ -31,11 +31,11 @@ namespace UIManager {
         lv_obj_set_style_text_font(time_label, &lv_font_montserrat_48, LV_PART_MAIN); 
         lv_obj_align(time_label, LV_ALIGN_CENTER, 0, -20);
 
-        // Batteriindikator (Uppe till höger på den runda skärmen)
+        // Batteriindikator 
         bat_label = lv_label_create(main_scr);
         lv_obj_set_style_text_color(bat_label, lv_color_white(), LV_PART_MAIN);
         lv_obj_set_style_text_font(bat_label, &lv_font_montserrat_14, LV_PART_MAIN);
-        lv_obj_align(bat_label, LV_ALIGN_TOP_RIGHT, -40, 40); // Justerad marginal för runda hörn
+        lv_obj_align(bat_label, LV_ALIGN_TOP_RIGHT, -40, 40); 
 
         // Inställningsknapp
         lv_obj_t* btn_settings = lv_btn_create(main_scr);
@@ -59,7 +59,6 @@ namespace UIManager {
         lv_obj_set_style_text_color(hour_roller, lv_color_white(), LV_PART_MAIN);
 
         min_roller = lv_roller_create(settings_scr);
-        // Expanderad till fulla minuter för precision
         lv_roller_set_options(min_roller, "00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59", LV_ROLLER_MODE_NORMAL);
         lv_obj_align(min_roller, LV_ALIGN_CENTER, 60, -20);
         lv_obj_set_style_bg_color(min_roller, lv_color_black(), LV_PART_MAIN);
@@ -90,7 +89,6 @@ namespace UIManager {
 
     void update() {
         if (lv_scr_act() == main_scr) {
-            // 1. Uppdatera tidssträngen
             if (time_label != nullptr) {
                 char time_buf[16];
                 snprintf(time_buf, sizeof(time_buf), "%02d:%02d:%02d", 
@@ -100,7 +98,6 @@ namespace UIManager {
                 lv_label_set_text(time_label, time_buf);
             }
 
-            // 2. Uppdatera batteristrängen (hämtas live från hårdvarumodulen)
             if (bat_label != nullptr) {
                 char bat_buf[16];
                 snprintf(bat_buf, sizeof(bat_buf), "BAT: %d%%", HardwareManager::getLipoPercentage());
