@@ -16,7 +16,7 @@ The project is built upon Waveshare's official `09_LVGL_Widgets` demonstration c
 
 ```text
 LVGL_Clock/
-├── 09_LVGL_Clock.ino      # Main sketch (Hardware initialization & core loops)
+├── LVGL_Clock.ino      # Main sketch (Hardware initialization & core loops)
 ├── ui_manager.h           # UI Architecture & state declarations
 ├── ui_manager.cpp         # UI implementation, dark theme styling, and screens
 ├── time_manager.h         # Timekeeping interface definitions
