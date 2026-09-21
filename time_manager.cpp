@@ -13,7 +13,6 @@ namespace TimeManager {
     void init() {
         last_tick = millis();
         
-        // Kontrollera om RTC svarar på I2C
         Wire.beginTransmission(RTC_I2C_ADDRESS);
         if (Wire.endTransmission() == 0) {
             Serial.println("[RTC] PCF85063A hittad och aktiverad!");
@@ -23,13 +22,11 @@ namespace TimeManager {
     }
 
     void update() {
-        // Hämta realtid direkt från hårdvaru-RTC
         Wire.beginTransmission(RTC_I2C_ADDRESS);
-        Wire.write(0x04); // Startregister för tid (sekunder) hos PCF85063
+        Wire.write(0x04); 
         if (Wire.endTransmission() == 0) {
-            Wire.requestFrom(RTC_I2C_ADDRESS, 3); // Begär sekunder, minuter, timmar
+            Wire.requestFrom(RTC_I2C_ADDRESS, 3); 
             if (Wire.available() == 3) {
-                // Konvertera BCD-format (Binary Coded Decimal) till vanliga heltal
                 uint8_t raw_sec = Wire.read() & 0x7F;
                 uint8_t raw_min = Wire.read() & 0x7F;
                 uint8_t raw_hr  = Wire.read() & 0x3F;
@@ -37,11 +34,10 @@ namespace TimeManager {
                 second = ((raw_sec >> 4) * 10) + (raw_sec & 0x0F);
                 minute = ((raw_min >> 4) * 10) + (raw_min & 0x0F);
                 hour   = ((raw_hr  >> 4) * 10) + (raw_hr  & 0x0F);
-                return; // Avbryt mjukvarubaserad tidräkning
+                return; 
             }
         }
 
-        // Fallback om I2C-kommunikationen skulle svikta temporärt
         unsigned long now = millis();
         if (now - last_tick >= 1000) {
             last_tick += 1000;
@@ -64,13 +60,12 @@ namespace TimeManager {
         second = s;
         last_tick = millis();
 
-        // Skriv den nya inställda tiden till hårdvaru-RTC-chippet
         uint8_t bcd_sec = ((s / 10) << 4) | (s % 10);
         uint8_t bcd_min = ((m / 10) << 4) | (m % 10);
         uint8_t bcd_hr  = ((h / 10) << 4) | (h % 10);
 
         Wire.beginTransmission(RTC_I2C_ADDRESS);
-        Wire.write(0x04); // Sekundregister
+        Wire.write(0x04); 
         Wire.write(bcd_sec);
         Wire.write(bcd_min);
         Wire.write(bcd_hr);
